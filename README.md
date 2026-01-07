@@ -59,19 +59,62 @@ According to the project requirements, the goal is to:
 
 ## Project Structure
 
+The project is organized as follows:
+
 ```
-DataAnalysisProject/
-│
+ProductDisplayPrediction/
 ├── Data/
-│   └── raw/
-│       └── new_Base_CDM_balanced_V2.csv    # Original dataset
+│   ├── raw/
+│   │   └── new_Base_CDM_balanced_V2.csv    # Original dataset
+│   └── processed/
+│       ├── categorical/
+│       │   └── data_categorical_mdlpc.csv  # Discretized data (MDLPC)
+│       └── continous/
+│           └── data_famd.csv               # FAMD transformed data
 │
 ├── src/
+│   ├── models/                            # Descriptive model scripts
+│   │   ├── DecisionTree_RandomForest_MDLPC_Categorical.py
+│   │   ├── LogisticRegression_MDLPC_Categorical.py
+│   │   ├── KNN_MDLPC_Categorical.py
+│   │   ├── NaiveBayes_MDLPC_Categorical.py
+│   │   ├── DecisionTree_RandomForest_FAMD_Continuous.py
+│   │   ├── LogisticRegression_FAMD_Continuous.py
+│   │   ├── KNN_FAMD_Continuous.py
+│   │   ├── GradientBoosting_FAMD_Continuous.py
+│   │   ├── NaiveBayes_FAMD_Continuous.py
+│   │   ├── SVM_FAMD_Continuous.py
+│   │   └── Neural_Network.ipynb
 │   └── scripts/
-│       └── data_analysis.ipynb              # Data exploration and analysis notebook
+│       ├── data_analysis.ipynb              # EDA Notebook
+│       ├── categorize_data.ipynb            # MDLPC processing
+│       └── process_data_famd.ipynb          # FAMD processing
 │
-└── README.md                                 # This file
+├── README.md                                 # Project documentation
+└── ...
 ```
+
+## Model Benchmarking & Results
+
+We evaluated several supervised learning models on two data representations: **MDLPC (Categorical)** and **FAMD (Continuous)**.
+
+### Performance Summary
+
+| Model | Data Approach | Accuracy | Precision (Weighted) | Recall (Weighted) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Random Forest** | FAMD | **84%** | 0.84 | 0.84 |
+| **Gradient Boosting**| FAMD | **84%** | 0.84 | 0.84 |
+| **SVM (RBF)** | FAMD | 82% | 0.82 | 0.82 |
+| **Decision Tree** | FAMD | 81% | 0.81 | 0.81 |
+| **Random Forest** | MDLPC | 81% | 0.81 | 0.81 |
+| **Logistic Regression**| MDLPC | 80% | 0.80 | 0.80 |
+| **Naive Bayes** | MDLPC | 78% | 0.78 | 0.78 |
+
+### Key Findings
+1. **FAMD Transformation:** The Factor Analysis of Mixed Data (FAMD) approach generally yielded better performance, specifically for tree-based ensemble models like Random Forest and Gradient Boosting.
+2. **MDLPC Discretization:** Turning continuous variables into categorical bins (MDLPC) worked well for Logistic Regression and Naive Bayes, providing a competitive 80% accuracy.
+3. **Best Model:** **Random Forest** on **FAMD** data is the most robust model for this task, balancing high accuracy (84%) with good recall for both `Displ` and `No_Displ` classes.
+
 
 ## Data Analysis Components
 
